@@ -40,3 +40,4 @@ const productSchema = new moongoose.Schema({
         timestamps: true
     }
 )
+export default moongoose.model("Product", productSchema)

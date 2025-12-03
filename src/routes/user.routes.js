@@ -1,7 +1,7 @@
-import User from "../models/user.models"
-import { registeruser } from "../controllers/user.controller"
+import User from "../models/user.models.js"
+import { registeruser } from "../controllers/user.controller.js"
 import express from "express"
-const router = express.Router()     
+const router = express.Router()
 
 router.post("/register", registeruser)
 

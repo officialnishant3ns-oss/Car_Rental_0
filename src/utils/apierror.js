@@ -1,4 +1,4 @@
-class apirerror extends error {
+class apirerror extends Error {
     constructor(statuscode, message, error = [],stack = "",)
     {
         super(message)

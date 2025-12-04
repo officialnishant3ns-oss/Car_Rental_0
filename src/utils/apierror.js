@@ -1,13 +1,12 @@
-class apirerror extends Error {
-    constructor(statuscode, message, error = [],stack = "",)
-    {
+class apierror extends Error {
+    constructor(statuscode, message = "something went wrong", error = [], stack = "",) {
         super(message)
-
         this.statuscode = statuscode
         this.data = null
         this.message = message
-        this.success = false
+        this.success = false;
         this.error = error
     }
 }
-export default apirerror
+
+export default apierror

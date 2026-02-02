@@ -1,5 +1,5 @@
 import User from "../models/user.models.js"
-
+import jwt from "jsonwebtoken"
 
 const Register = async (req, res) => {
     try {
@@ -42,8 +42,12 @@ const Login = async (req, res) => {
             return res.status(400).json({ message: "Password not valid" })
         }
        const Token = jwt.sign({  _id: user._id},process.env.TOKEN_SECRETE,{  expiresIn: process.env.TOKEN_EXPIRY})
-  
-        return res.status(200).json({ success: true, message: "User Register successfully", Token,user })
+
+        const createdUser = await User.findById(user._id).select("-password")
+        if (!createdUser) {
+            return res.status(500).json({ message: "Something went wrong creating the user" })
+        }
+        return res.status(200).json({ success: true, message: "Login successful", Token,user:createdUser })
 
         
     } catch (error) {

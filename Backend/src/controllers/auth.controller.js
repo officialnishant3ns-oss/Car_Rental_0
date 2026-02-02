@@ -5,7 +5,7 @@ const Register = async (req, res) => {
     try {
         const { fullname, email, password } = req.body
         if (!fullname || !email || !password) {
-            return res.status(400).json({ message: "Something is Missing" })
+            return res.status(400).json({ message: "Something is Missing {email,password,Fullname}" })
         }
         const userExist = await User.findOne({ email })
         if (userExist) {
@@ -20,13 +20,37 @@ const Register = async (req, res) => {
         if (!createdUser) {
             return res.status(500).json({ message: "Something went wrong creating the user" })
         }
-        return res.status(200).json({ success: true, message: "User SignUp successfully", user: createdUser })
+        return res.status(200).json({ success: true, message: "User Register successfully", user: createdUser })
 
     } catch (error) {
         console.error("Register Error::", error)
         return res.status(500).json({ message: "Something went wrong while Registering User" })
     }
 }
+const Login = async (req, res) => {
+    try {
+        const { email, password } = req.body
+        if (!email || !password) {
+            return res.status(400).json({ message: "Something is Missing {email,password}" })
+        }
+        const user = await User.findOne({ email })
+        if (!user) {
+            return res.status(400).json({ message: "User Don't exist go For Register" })
+        }
+        const validpassword = await user.isPassword(password)
+        if (!validpassword) {
+            return res.status(400).json({ message: "Password not valid" })
+        }
+       const Token = jwt.sign({  _id: user._id},process.env.TOKEN_SECRETE,{  expiresIn: process.env.TOKEN_EXPIRY})
+  
+        return res.status(200).json({ success: true, message: "User Register successfully", Token,user })
 
+        
+    } catch (error) {
+        console.error("Register Error::", error)
+        return res.status(500).json({ message: "Something went wrong while Login User" })
 
-export {Register}
+    }
+}
+
+export { Register ,Login}

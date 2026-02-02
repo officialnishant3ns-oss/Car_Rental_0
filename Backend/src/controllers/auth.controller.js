@@ -69,15 +69,7 @@ const Login = async (req, res) => {
 }
 const Logout = async (req, res) => {
     try {
-       await User.findByIdAndUpdate(req.user._id,
-        {
-             $set: {
-                    Token: undefined
-                }
-        },
-        {new: true}
-       )
-
+  
          const options = {
             httpOnly: true,
             secure: true

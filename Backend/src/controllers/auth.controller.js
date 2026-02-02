@@ -24,7 +24,7 @@ const Register = async (req, res) => {
 
     } catch (error) {
         console.error("Register Error::", error)
-        return res.status(500).json({ message: "Something went wrong while Registering User" })
+        return res.status(500).json({success: true, message: "Something went wrong while Registering User" })
     }
 }
 const Login = async (req, res) => {
@@ -41,15 +41,52 @@ const Login = async (req, res) => {
         if (!validpassword) {
             return res.status(400).json({ message: "Password not valid" })
         }
-       const Token = jwt.sign({  _id: user._id},process.env.TOKEN_SECRETE,{  expiresIn: process.env.TOKEN_EXPIRY})
+        const Token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRETE, { expiresIn: process.env.TOKEN_EXPIRY })
 
         const createdUser = await User.findById(user._id).select("-password")
         if (!createdUser) {
             return res.status(500).json({ message: "Something went wrong creating the user" })
         }
-        return res.status(200).json({ success: true, message: "Login successful", Token,user:createdUser })
+        const options = {
+            httpOnly: true,
+            secure: true
+        }
+        return res
+            .status(200)
+            .cookie("Token", Token, options)
+            .json({
+                success: true,
+                message: "User signed in successfully",
+                user: createdUser,
+                Token
+            })
 
-        
+    } catch (error) {
+        console.error("Register Error::", error)
+        return res.status(500).json({ message: "Something went wrong while Login User" })
+
+    }
+}
+const Logout = async (req, res) => {
+    try {
+       await User.findByIdAndUpdate(req.user._id,
+        {
+             $set: {
+                    Token: undefined
+                }
+        },
+        {new: true}
+       )
+
+         const options = {
+            httpOnly: true,
+            secure: true
+        }
+        return res.status(200).clearCookie("Token", options)
+            .json({   success: true,message: "User SignOut Successfully" }
+            )
+
+
     } catch (error) {
         console.error("Register Error::", error)
         return res.status(500).json({ message: "Something went wrong while Login User" })
@@ -57,4 +94,4 @@ const Login = async (req, res) => {
     }
 }
 
-export { Register ,Login}
+export { Register, Login,Logout }

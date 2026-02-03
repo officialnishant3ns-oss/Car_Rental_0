@@ -86,4 +86,5 @@ const Logout = async (req, res) => {
     }
 }
 
+
 export { Register, Login,Logout }

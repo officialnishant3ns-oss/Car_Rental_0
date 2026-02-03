@@ -8,34 +8,47 @@ const carSchema = new mongoose.Schema({
 
     brand: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
 
     category: {
         type: String,
-        enum: ["sedan", "suv", "hatchback", "luxury", "van"]
+        enum: ["sedan", "suv", "hatchback", "luxury", "van"],
+        required: true,
+        lowercase: true
     },
 
     fuelType: {
         type: String,
-        enum: ["petrol", "diesel", "electric", "hybrid"]
+        enum: ["petrol", "diesel", "electric", "hybrid"],
+        required: true,
+        lowercase: true
     },
 
     seats: {
-        type: Number
+        type: Number,
+        required: true,
+        min: 1,
+        max: 20
     },
 
     pricePerDay: {
         type: Number,
-        required: true
+        required: true,
+        min: 0
     },
+
     images: {
-        type: [String]
+        type: [String],
+        default: []
     },
+
     status: {
         type: String,
         enum: ["available", "booked", "maintenance"],
-        default: "available"
+        default: "available",
+        index: true
     },
 
     location: {
@@ -43,9 +56,9 @@ const carSchema = new mongoose.Schema({
         branch: String
     }
 },
-{
-    timestamps:true
-}
+    {
+        timestamps: true
+    }
 )
 
 const Car = mongoose.model('Car', carSchema)

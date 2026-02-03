@@ -11,6 +11,8 @@ import UserRouter from './routes/auth.routes.js'
 app.use('/api/v1/user', UserRouter)
 
 
+import carRoutes from '../src/routes/car.routes.js'
+app.use('/api/v1/car',carRoutes)
 
 
 export default app

@@ -42,7 +42,11 @@ const carSchema = new mongoose.Schema({
         city: String,
         branch: String
     }
-})
+},
+{
+    timestamps:true
+}
+)
 
 const Car = mongoose.model('Car', carSchema)
 export default Car

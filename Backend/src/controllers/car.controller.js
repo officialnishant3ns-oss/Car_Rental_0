@@ -18,7 +18,7 @@ const AddCar = async (req, res) => {
             })
         }
         //images >>cloudinary setup
-        
+
         const car = await Car.create({
             carname,
             brand,
@@ -30,13 +30,39 @@ const AddCar = async (req, res) => {
             location
 
         })
-        return res.status(201).json({ status: true, message: "Car added succesfully",data: car })
+        return res.status(201).json({ status: true, message: "Car added succesfully", data: car })
 
     } catch (error) {
         console.error("Register Error::", error)
-        return res.status(500).json({ message: "Something went wrong while Login User" })
+        return res.status(500).json({ message: "Something went wrong while adding car" })
 
     }
 }
+const updateCar = async (req, res) => {
+    try {
+        const { id } = req.params
+        // const {} = req.body
 
-export {AddCar}
+        const updateCar = await Car.findByIdAndUpdate(id,
+            req.body, //>>>>>>> we take also there by upper method 
+            {
+                new: true,
+                runValidators: true
+            }
+        )
+        if (!updateCar) {
+            return res.status(404).json({ success: true, message: "Car not found" })
+        }
+        return res.status(200).json({
+            success: true,
+            message: "Car updated successfully",
+            data: updateCar
+        })
+
+    } catch (error) {
+        console.error("Update car error", error)
+        return res.status(500).json({ message: "Something went wrong while Updating car" })
+    }
+}
+
+export { AddCar ,updateCar}

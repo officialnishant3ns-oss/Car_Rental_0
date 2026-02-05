@@ -64,5 +64,29 @@ const updateCar = async (req, res) => {
         return res.status(500).json({ message: "Something went wrong while Updating car" })
     }
 }
+const deleteCar = async (req, res) => {
+    try {
+        const { id } = req.params
+        if(!id){
+            return res.status(400).json({ message: "Invalid car ID" })
+        }
 
-export { AddCar ,updateCar}
+        const deletedCar = await Car.findByIdAndDelete({ id })
+        if (!deletedCar) {
+            return res.status(404).json({ message: "Car not found" });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Car deleted successfully",
+            data: deletedCar
+        })
+
+    } catch (error) {
+        console.error("Update car error", error)
+        return res.status(500).json({ message: "Something went wrong while Updating car" })
+
+    }
+}
+
+export { AddCar, updateCar,deleteCar }

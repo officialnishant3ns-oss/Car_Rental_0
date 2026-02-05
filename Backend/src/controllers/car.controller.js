@@ -88,5 +88,19 @@ const deleteCar = async (req, res) => {
 
     }
 }
+const getCarByid = async(req,res)=>{
+    try {
+        const {id} =req.params
+        const carDetail = await Car.findById(id)
+        if (!carDetail) {
+            return res.status(404).json({ message: "Car not found" });
+        }
+         return res.status(200).json({status:true,carDetail})
+        
+    } catch (error) {
+             console.error("Update car error", error)
+        return res.status(500).json({ message: "Something went wrong while get carDetail" })
 
-export { AddCar, updateCar,deleteCar }
+    }
+}
+export { AddCar, updateCar,deleteCar,getCarByid }

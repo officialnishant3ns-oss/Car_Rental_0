@@ -6,7 +6,7 @@ const router = Router()
 router.post('/addcar',verifyJWT,AddCar)
 router.post('/updatecar/:id',verifyJWT,updateCar)
 router.post('/deletecar',verifyJWT,deleteCar)
-
+router.get('/getcar/:id',getCarByid)
 
 
 export default router

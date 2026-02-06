@@ -44,11 +44,11 @@ const Navbar = () => {
     />
 
   </div>
-  <div>
-    <div>
+  <div className='flex items-center justify-center gap-x-10'>
+    <div className="text-xl hover:text-amber-500 transition font-normal">
       List car
     </div>
-    <button>s</button>
+    <button className='p-3 bg-blue-600 border-2 border-blue-800 rounded-2xl'>Sign Up</button>
   </div>
 
 </div>

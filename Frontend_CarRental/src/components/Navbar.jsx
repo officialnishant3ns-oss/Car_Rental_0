@@ -12,7 +12,9 @@ const Navbar = () => {
 
   <ul className="flex items-center gap-8 text-xl font-semibold text-gray-700">
     <li>
-      <NavLink className="hover:text-amber-500 transition">
+      <NavLink  
+      to="/home"
+      className="hover:text-amber-500 transition">
         Home
       </NavLink>
     </li>
@@ -29,7 +31,8 @@ const Navbar = () => {
   </ul>
 
   
-  <div className="flex items-center w-80 px-4 py-2 border-3 border-gray-500 rounded-full focus-within:ring-2 focus-within:ring-amber-400 transition">
+  <div className=" flex items-center w-80 px-4 py-2 border-3 border-gray-500 rounded-full focus-within:ring-2 focus-within:ring-amber-400 transition max-sm:hidden
+">
 
     <input
       type="text"

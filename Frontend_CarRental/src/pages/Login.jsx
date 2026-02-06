@@ -1,85 +1,80 @@
-import { useState } from "react";
+import React from 'react'
+import { useState } from 'react'
+import api from '../api/api.js'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [Loading, setLoading] = useState(false)
+
+  const submitHandler = async (e) => {
+    e.preventDefault()
+    setLoading(true)
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: "include", // important if you use cookies/JWT
-        body: JSON.stringify({
-          email,
-          password
-        })
-      });
+      const res = await api.post("/user/login", {
+        email,
+        password
+      })
+      console.log("Login success:", res.data)
+      localStorage.setItem("token", res.data.Token)
+      localStorage.setItem("user", JSON.stringify(res.data.user))
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Login failed");
-      }
-
-      console.log("Logged in user:", data);
-
-      // Example: save token if backend sends it
-      // localStorage.setItem("token", data.token);
-
-      alert("Login successful!");
+      setEmail('')
+      setPassword('')
+      console.log("submited")
     } catch (err) {
-      setError(err.message);
+      console.log("Login failed:", err.response?.data || err.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
+    <div className=" flex items-center justify-center">
       <form
-        onSubmit={handleSubmit}
-        className="bg-gray-800 p-8 rounded-xl w-96 text-white space-y-4"
-      >
-        <h2 className="text-2xl font-bold text-center">Login</h2>
-
-        {error && <p className="text-red-400 text-sm">{error}</p>}
+        onSubmit={submitHandler}
+        className="flex flex-col items-center gap-4 bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
 
         <input
           type="email"
-          placeholder="Email"
-          className="w-full p-2 rounded bg-gray-700 outline-none"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
           required
+          onChange={(e) => {
+            setEmail(e.target.value)
+          }}
+          placeholder="Enter your Email"
+          className="border-2 border-gray-400 p-4 outline-none rounded-xl w-full font-semibold focus:border-amber-400"
         />
 
         <input
           type="password"
-          placeholder="Password"
-          className="w-full p-2 rounded bg-gray-700 outline-none"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
           required
+          onChange={(e) => {
+            setPassword(e.target.value)
+          }}
+          placeholder="Enter your Password"
+          className="border-2 border-gray-400 p-4 outline-none rounded-xl w-full font-semibold focus:border-amber-400"
         />
 
+        <p className="text-sm">
+          Don’t have an account?{" "}
+          <Link to="/register" className="text-blue-500 font-semibold">
+            Sign up
+          </Link>
+        </p>
         <button
-          disabled={loading}
-          className="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded"
+          disabled={Loading}
+          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-xl w-full mt-2"
         >
-          {loading ? "Logging in..." : "Login"}
+          {Loading ? "Logging In" : "Login"}
         </button>
+
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

@@ -85,6 +85,23 @@ const Logout = async (req, res) => {
 
     }
 }
+const getUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password -createdAt -updatedAt -__v')
+    if (!user) {
+      return res.status(404).json({ message: "User not found" })
+    }
+    return res.status(200).json({
+      message: "User fetched successfully",
+      user
+    })
+
+  } catch (error) {
+    console.error("Get User Error:", error);
+    return res.status(500).json({ message: "Server error while fetching user" })
+  }
+}
 
 
-export { Register, Login,Logout }
+
+export { Register, Login,Logout,getUser }

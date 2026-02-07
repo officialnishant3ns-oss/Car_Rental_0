@@ -1,15 +1,30 @@
 import { useState } from 'react'
 import './App.css'
 import Navbar from './components/Navbar'
-import Footer from './components/Footer'
-import Login from './pages/Login'
-import Register from './pages/Register'
+import Hero from './components/Hero'
+import { Route, Routes, useLocation } from 'react-router-dom'
+import Home from './pages/Home'
+import Car from './pages/Car'
+import Cardetails from './pages/Cardetails'
+import Booking from './pages/Booking'
 
 function App() {
-  
+  const [showLogin, setShowLogin] = useState(false)
+
+  const location = useLocation()
+  const isOwnerPath = location.pathname.startsWith('/owner')
+
   return (
     <>
-   <Register/>
+      {!isOwnerPath && <Navbar setShowLogin={setShowLogin} />}
+      <Routes>
+        <Route path='/home' element={<Home />} />
+        <Route path='/car' element={<Car />} />
+        <Route path='/car-details/:id' element={<Cardetails />} />
+        <Route path='/my-bookings' element={<Booking />} />
+      </Routes>
+
+
     </>
   )
 }

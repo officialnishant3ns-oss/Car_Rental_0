@@ -11,7 +11,10 @@ const carSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-
+    year:{
+        type:Number
+    },
+    
     category: {
         type: String,
         enum: ["sedan", "suv", "hatchback", "luxury", "van"],
@@ -38,6 +41,9 @@ const carSchema = new mongoose.Schema({
         required: true,
         min: 0
     },
+    transmission:{
+        type:String
+    },
 
     images: {
         type: [String],
@@ -50,7 +56,10 @@ const carSchema = new mongoose.Schema({
         default: "available",
         index: true
     },
-
+    isAvailable:{
+        type:Boolean,
+        default:true
+    },
     location: {
         city: String,
         branch: String
